@@ -1,0 +1,13 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <radialGradient cy="0.53984" cx="0.51172" r="5.65685" spreadMethod="pad" id="svg_3">
+   <stop offset="0" stop-color="#000000"/>
+   <stop offset="1" stop-color="#ffffff"/>
+  </radialGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <ellipse stroke-width="14" ry="172" rx="170" id="svg_1" cy="314" cx="413.5" stroke="url(#svg_3)" fill="#3c61b2"/>
+  <text transform="matrix(13.3016, 0, 0, 14.2028, -3825.28, -2386.73)" xml:space="preserve" text-anchor="start" font-family="'Archivo'" font-size="24" id="svg_4" y="199.52997" x="311.37753" stroke="#000000" fill="#ffffff">T</text>
+ </g>
+</svg>

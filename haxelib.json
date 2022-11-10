@@ -1,0 +1,12 @@
+{
+    "name": "trax",
+    "url" : "https://github.com/coolfren/Trax",
+    "license": "GPL",
+    "tags": ["http", "cross", "server", "router"],
+    "description": "Native web framework for Haxe",
+    "version": "1.0.0",
+    "classPath": "src/",
+    "releasenote": "Initial release, everything is working correctly.",
+    "contributors": ["coolfren"],
+    "dependencies": {}
+  }
