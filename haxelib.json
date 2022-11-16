@@ -6,7 +6,7 @@
     "description": "Native web framework for Haxe",
     "version": "0.0.1",
     "classPath": "src/",
-    "releasenote": "Initial release, everything is working correctly.",
+    "releasenote": "Initial release",
     "contributors": ["coolfren"],
     "dependencies": {}
   }

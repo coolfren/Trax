@@ -3,7 +3,7 @@
 # Trax
 Trax is a web framework for Haxe similar to Express.
 
-This project is still work in progress. Expect missing features. (Pull requests are always welcome!)
+This project is still work in progress. Expect missing features and bugs. (Pull requests are always welcome!)
 
 ## TODO
 - [x] Implement middleware
