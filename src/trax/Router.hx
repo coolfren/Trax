@@ -121,7 +121,6 @@ class Router
           request.body = {};
           for(param in params){
             final splitParam = param.split("=");
-            trace("bruh");
             Reflect.setField(request.body, splitParam[0], splitParam[1]);
           }
           request.requestInfo.path = params[0];

@@ -50,10 +50,88 @@ class Headers {
                 "301 Moved Permanently";
             case 302:
                 "302 Found";
+            case 303:
+                "303 See Other";
+            case 304:
+                "304 Not Modified";
+            case 305:
+                "305 Use Proxy";
+            case 306:
+                "306 unused";
+            case 307:
+                "307 Temporary Redirect";
+            case 308:
+                "308 Permanent Redirect";
+            case 400:
+                "400 Bad Request";
+            case 401:
+                "401 Unauthorized";
+            case 402:
+                "402 Payment Required";
+            case 403:    
+                "403 Forbidden";
             case 404:
                 "404 Not Found";
+            case 405:
+                "405 Method Not Allowed";
+            case 406:
+                "406 Not Acceptable";
+            case 407:
+                "407 Proxy Authentication Required";
+            case 408:
+                "408 Request Timeout";
+            case 409:
+                "409 Conflict";
+            case 410:
+                "410 Gone";
+            case 411:
+                "411 Length Required";
+            case 412:
+                "412 Precondition Failed";
+            case 413:
+                "413 Payload Too Large";
+            case 414:
+                "414 URI Too Long";
+            case 415:
+                "415 Unsupported Media Type";
+            case 416:
+                "416 Range Not Satisfiable";
+            case 417:
+                "417 Expectation Failed";
             case 418:
                 "418 I'm a teapot";
+            case 421:
+                "421 Misdirected Request";
+            case 425:
+                "425 Too Early";
+            case 426:
+                "426 Upgrade Required";
+            case 428:
+                "428 Precondition Required";
+            case 429:
+                "429 Too Many Requests";
+            case 431:
+                "431 Request Header Fields Too Large";
+            case 451:
+                "451 Unavailable For Legal Reasons";
+            case 500:
+                "500 Internal Server Error";
+            case 501:
+                "501 Not Implemented";
+            case 502:
+                "502 Bad Gateway";
+            case 503:
+                "503 Service Unavailable";
+            case 504:
+                "504 Gateway Timeout";
+            case 505:
+                "505 HTTP Version Not Supported";
+            case 506:
+                "506 Variant Also Negotiates";
+            case 510:
+                "510 Not Extended";
+            case 511:
+                "511 Network Authentication Required";
             default:
                 "400 Bad Request";
         };
