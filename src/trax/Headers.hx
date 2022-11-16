@@ -44,6 +44,12 @@ class Headers {
                 "206 Partial Content";
             case 207:
                 "207 Multi-Status";
+            case 300:
+                "300 Multiple Choices";
+            case 301:
+                "301 Moved Permanently";
+            case 302:
+                "302 Found";
             case 404:
                 "404 Not Found";
             case 418:
@@ -53,18 +59,10 @@ class Headers {
         };
     }
 
-    public static final defaultHeaders:Array<String> = [
-        'Connection: closed',
-        'Date: ${Date.now().toString()}',
-        server
-    ];
-
     public static function buildHeaders(headers:Array<String>, body:String):String
     {
         var temp = "";
         temp += "HTTP/1.1 ";
-        for(def in defaultHeaders)
-            temp += def + "\n";
         for(head in headers){
             temp += head + "\n";
         }
@@ -88,5 +86,4 @@ class Headers {
         </body>
         </html>';
     }
-    public static final server = "Server: Trax/1.0.0";
 }

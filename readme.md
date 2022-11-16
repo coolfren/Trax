@@ -6,13 +6,15 @@ Trax is a web framework for Haxe similar to Express.
 This project is still work in progress. Expect missing features. (Pull requests are always welcome!)
 
 ## TODO
-- [ ] Implement middleware
-- [ ] Implement parsing of GET parameters and POST bodies
+- [x] Implement middleware
+- [x] Implement parsing of GET parameters and POST bodies (partially)
+- [ ] More features
 
 ## Example
 ```haxe
 package;
 
+import trax.Middleware;
 import trax.Router;
 
 class Main {
@@ -26,9 +28,11 @@ class Main {
 
     app.get("/", (req, res)->{
       res.send("Hello World!\n");
-      res.send("Your Useragent: " + req.headers.get("User-Agent"));
+      res.send("Your Useragent: " + req.headers.get("User-Agent") + "\n");
+      if(req.body.foo == "bar")
+        res.send("foobar!");
     });
-    
+
     app.listen(port);
   }
 }

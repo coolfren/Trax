@@ -4,14 +4,21 @@ import sys.thread.Thread;
 import trax.Headers.StartHeader;
 import sys.net.Socket;
 import sys.net.Host;
+import haxe.io.Mime;
 using StringTools;
 
 class Response
 {
-  public var headers:Map<String, String> = [];
+  public var headers:Map<String, String> = [
+    'Connection' => 'closed',
+    'Date' => Date.now().toString(),
+    'Server' => 'Trax/0.0.1',
+    "Content-Type" => Mime.TextHtml
+  ];
   public var body:Null<String>;
   public var client:Socket;
   public var statusCode:String = "200 OK";
+  public var headersSent:Bool = false;
 
   public function new(client:Socket){
     this.client = client;
@@ -23,6 +30,8 @@ class Response
   }
 
   public function send(content:String){
+    if(headersSent)
+      return;
     if(this.body == null)
       this.body = "";
     this.body += content;
@@ -30,7 +39,7 @@ class Response
   }
 
   public function json(content:String){
-    headers.set("Content-Type", "application/json");
+    headers.set("Content-Type", Mime.ApplicationJson);
     send(content);
   }
 }
@@ -39,9 +48,9 @@ class Request
 {
   public var requestInfo:StartHeader;
   public var headers:Map<String, String> = [];
-  public var body:String;
+  public var body:Dynamic;
   public var useragent:String;
-  
+
   public function new(){}
   public function toString(){
     return 'Information: $requestInfo\nHeaders:$headers\nBody:$body\n';
@@ -62,6 +71,8 @@ class Router
   
   public var onStart:Void->Void;
 
+  public var middleware:Array<RouteFunction> = [];
+
   public var address = "";
   
   public function new(address:String = "127.0.0.1", ?onStart:Void->Void)
@@ -70,8 +81,13 @@ class Router
     this.onStart = onStart;
   }
 
+  public function use(middleware:RouteFunction){
+    this.middleware.push(middleware);
+  }
+
   private function handleConnections(c:Socket){
     var requestH:String = "";
+    c.setTimeout(30);
     c.setBlocking(false);
     while(true){
       try{
@@ -84,32 +100,63 @@ class Router
         break;
     }
     //c.write(header);
-    trace(requestH);
+
     final request = new Request();
     final response = new Response(c);
-    final nlreq = requestH.split("\n");
-    final start = nlreq[0].split(" ");
-    request.requestInfo = {
-      method: start[0],
-      path: start[1],
-      version: start[2]
-    };
-    nlreq.pop();
-    for(i in 0...nlreq.length){
-      final header = nlreq[i].split(": ");
-      request.headers.set(header[0], header[1]);
+
+    try{
+      final nlreq = requestH.split("\n");
+      final start = nlreq[0].split(" ");
+      if(start[0] == null || start[1] == null || start[2] == null)
+        throw "Null!";
+      request.requestInfo = {
+        method: start[0],
+        path: start[1],
+        version: start[2]
+      };
+      nlreq.pop();
+      if(request.requestInfo.method == "GET"){
+        final params = request.requestInfo.path.split("?");
+        if(params.length > 1){
+          request.body = {};
+          for(param in params){
+            final splitParam = param.split("=");
+            trace("bruh");
+            Reflect.setField(request.body, splitParam[0], splitParam[1]);
+          }
+          request.requestInfo.path = params[0];
+        }
+      }
+      for(i in 0...nlreq.length){
+        final header = nlreq[i].split(": ");
+        request.headers.set(header[0], header[1]);
+      }
     }
+    catch(e){
+      error(c, 400);
+      return;
+    }
+
+    for(ware in middleware)
+      ware(request, response);
+
     try{
       routes.get(request.requestInfo.method).get(request.requestInfo.path)(request, response);
     }
     catch(e){
-      c.write(Headers.buildHeaders([Headers.status(404), Headers.server, "Content-Type: text/html"], Headers.buildBody(404)));
-      c.close();
-      return;
+      if(!response.headersSent){
+        error(c, 404);
+        return;
+      }
     }
     final headersI = Headers.headersFromMap(response.headers);
     headersI.insert(0, response.statusCode);
     c.write(Headers.buildHeaders(headersI, response.body));
+    c.close();
+  }
+
+  public function error(c:Socket, code:Int){
+    c.write(Headers.buildHeaders([Headers.status(code), "Content-Type: text/html"], Headers.buildBody(code)));
     c.close();
   }
 

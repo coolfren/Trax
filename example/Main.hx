@@ -1,5 +1,6 @@
 package;
 
+import trax.Middleware;
 import trax.Router;
 
 class Main {
@@ -13,9 +14,11 @@ class Main {
 
     app.get("/", (req, res)->{
       res.send("Hello World!\n");
-      res.send("Your Useragent: " + req.headers.get("User-Agent"));
+      res.send("Your Useragent: " + req.headers.get("User-Agent") + "\n");
+      if(req.body.foo == "bar")
+        res.send("foobar!");
     });
-    
+
     app.listen(port);
   }
 }
