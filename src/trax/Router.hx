@@ -1,5 +1,6 @@
 package trax;
 
+import haxe.io.Bytes;
 import sys.thread.Thread;
 import trax.Headers.StartHeader;
 import sys.net.Socket;
@@ -15,7 +16,7 @@ class Response
     'Server' => 'Trax/0.0.1',
     "Content-Type" => Mime.TextHtml
   ];
-  public var body:Null<String>;
+  public var body:Dynamic;
   public var client:Socket;
   public var statusCode:String = "200 OK";
   public var headersSent:Bool = false;
@@ -36,6 +37,11 @@ class Response
       this.body = "";
     this.body += content;
     headers.set("Content-Length", Std.string(this.body.length));
+  }
+
+  public function sendBytes(bytes:Bytes, type:Mime){
+    this.body = bytes;
+    this.headers['Content-Type'] = type;
   }
 
   public function json(content:String){

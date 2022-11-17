@@ -1,5 +1,6 @@
 package;
 
+import sys.io.File;
 import trax.Middleware;
 import trax.Router;
 
@@ -17,6 +18,10 @@ class Main {
       res.send("Your Useragent: " + req.headers.get("User-Agent") + "\n");
       if(req.body.foo == "bar")
         res.send("foobar!");
+    });
+
+    app.get("/image", (req, res)->{
+      res.sendBytes(File.getBytes("md/trax.png"), ImagePng);
     });
 
     app.listen(port);
